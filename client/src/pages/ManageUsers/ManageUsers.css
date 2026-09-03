@@ -1,0 +1,142 @@
+/* =========================================
+   USERS PAGE
+========================================= */
+
+.users-container {
+    display: flex;
+    gap: 20px;
+
+    padding: 20px;
+
+    height: calc(100vh - 5rem);
+
+    box-sizing: border-box;
+
+    /* Main dark background */
+    background-color: #252b30;
+}
+
+
+/* =========================================
+   LEFT COLUMN
+========================================= */
+
+.users-container .left-column {
+    flex: 0.7;
+
+    /* Slightly lighter dark panel */
+    background-color: #30383e;
+
+    border: 1px solid #48535b;
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    height: 100%;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   RIGHT COLUMN
+========================================= */
+
+.users-container .right-column {
+    flex: 0.3;
+
+    /* Same panel style */
+    background-color: #30383e;
+
+    border: 1px solid #48535b;
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    height: 100%;
+
+    box-sizing: border-box;
+
+    color: #e6edf3;
+
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+
+    overflow-y: auto;
+}
+
+
+/* =========================================
+   HEADINGS
+========================================= */
+
+.users-container h1,
+.users-container h2,
+.users-container h3 {
+    color: #f1f5f9;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+.users-container .right-column::-webkit-scrollbar {
+    width: 6px;
+}
+
+.users-container .right-column::-webkit-scrollbar-track {
+    background: #2b3237;
+}
+
+.users-container .right-column::-webkit-scrollbar-thumb {
+    background: #59656e;
+    border-radius: 10px;
+}
+
+.users-container .right-column::-webkit-scrollbar-thumb:hover {
+    background: #72808a;
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 768px) {
+
+    .users-container {
+        flex-direction: column;
+
+        height: auto;
+
+        min-height: calc(100vh - 5rem);
+
+        overflow-y: auto;
+    }
+
+    .users-container .left-column,
+    .users-container .right-column {
+        width: 100%;
+
+        flex: none;
+
+        height: auto;
+    }
+
+    .users-container .left-column {
+        min-height: 400px;
+    }
+
+    .users-container .right-column {
+        min-height: 300px;
+    }
+}

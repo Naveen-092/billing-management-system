@@ -1,0 +1,182 @@
+/* =========================================
+   ORDER HISTORY PAGE
+========================================= */
+
+.orders-history-container {
+    padding: 20px;
+    height: calc(100vh - 5rem);
+    box-sizing: border-box;
+
+    /* Keep page dark */
+    background-color: #252b30;
+
+    overflow-y: auto;
+}
+
+
+/* =========================================
+   PAGE TITLE
+========================================= */
+
+.orders-history-container h2 {
+    color: #f1f5f9;
+
+    font-weight: 600;
+
+    margin-bottom: 20px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #48535b;
+}
+
+
+/* =========================================
+   TABLE CONTAINER
+========================================= */
+
+.table-responsive {
+    background: #f8f9fa;
+
+    border-radius: 12px;
+
+    padding: 8px;
+
+    overflow-x: auto;
+
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.orders-history-container .table {
+    margin-top: 0;
+    margin-bottom: 0;
+
+    background-color: #ffffff;
+
+    color: #212529;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   TABLE HEADER
+========================================= */
+
+.orders-history-container .table th {
+    background-color: #343a40;
+
+    color: #ffffff;
+
+    font-weight: 600;
+
+    padding: 14px;
+
+    vertical-align: middle;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   TABLE BODY
+========================================= */
+
+.orders-history-container .table td {
+    background-color: #ffffff;
+
+    color: #343a40;
+
+    padding: 14px;
+
+    vertical-align: middle;
+
+    border-bottom: 1px solid #dee2e6;
+}
+
+
+/* =========================================
+   ALTERNATE ROWS
+========================================= */
+
+.orders-history-container .table tbody tr:nth-child(even) td {
+    background-color: #f8f9fa;
+}
+
+
+/* =========================================
+   ROW HOVER
+========================================= */
+
+.orders-history-container .table tbody tr:hover td {
+    background-color: #e9ecef;
+
+    transition: background-color 0.2s ease;
+}
+
+
+/* =========================================
+   BADGES
+========================================= */
+
+.orders-history-container .badge {
+    font-size: 0.85em;
+
+    padding: 6px 10px;
+
+    border-radius: 6px;
+
+    font-weight: 500;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+.orders-history-container::-webkit-scrollbar {
+    width: 7px;
+}
+
+.orders-history-container::-webkit-scrollbar-track {
+    background: #252b30;
+}
+
+.orders-history-container::-webkit-scrollbar-thumb {
+    background: #59656e;
+    border-radius: 10px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .orders-history-container {
+        padding: 15px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table td,
+    .table th {
+        white-space: nowrap;
+        padding: 12px;
+    }
+
+    .orders-history-container h2 {
+        font-size: 1.5rem;
+    }
+}
