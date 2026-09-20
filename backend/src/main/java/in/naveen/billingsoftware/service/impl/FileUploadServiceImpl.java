@@ -1,10 +1,7 @@
 package in.naveen.billingsoftware.service.impl;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,13 +10,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+
 import in.naveen.billingsoftware.service.FileUploadService;
 
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
 
-    @Value("${file.upload-dir}")
-    private String uploadDir;
+    private final Cloudinary cloudinary;
+
+    public FileUploadServiceImpl(
+            @Value("${CLOUDINARY_CLOUD_NAME}") String cloudName,
+            @Value("${CLOUDINARY_API_KEY}") String apiKey,
+            @Value("${CLOUDINARY_API_SECRET}") String apiSecret) {
+
+        this.cloudinary = new Cloudinary(
+                ObjectUtils.asMap(
+                        "cloud_name", cloudName,
+                        "api_key", apiKey,
+                        "api_secret", apiSecret
+                )
+        );
+    }
 
     @Override
     public String uploadFile(MultipartFile file) {
@@ -33,29 +46,17 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         try {
 
-            File directory = new File(uploadDir);
+            String publicId = UUID.randomUUID().toString();
 
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
+            Map<?, ?> result = cloudinary.uploader().upload(
+                    file.getBytes(),
+                    ObjectUtils.asMap(
+                            "public_id", publicId,
+                            "folder", "billing-management"
+                    )
+            );
 
-            String originalFilename = file.getOriginalFilename();
-
-            String extension = "";
-
-            if (originalFilename != null && originalFilename.contains(".")) {
-                extension = originalFilename.substring(
-                        originalFilename.lastIndexOf(".")
-                );
-            }
-
-            String filename = UUID.randomUUID().toString() + extension;
-
-            Path filePath = Paths.get(uploadDir, filename);
-
-            Files.write(filePath, file.getBytes());
-
-            return "/uploads/" + filename;
+            return result.get("secure_url").toString();
 
         } catch (IOException e) {
 
@@ -69,26 +70,52 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public boolean deleteFile(String imgUrl) {
 
+        if (imgUrl == null || imgUrl.isEmpty()) {
+            return false;
+        }
+
         try {
 
-            if (imgUrl == null || imgUrl.isEmpty()) {
-                return false;
-            }
+            String publicId = extractPublicId(imgUrl);
 
-            String filename = imgUrl.substring(
-                    imgUrl.lastIndexOf("/") + 1
+            Map<?, ?> result = cloudinary.uploader().destroy(
+                    publicId,
+                    ObjectUtils.emptyMap()
             );
 
-            Path filePath = Paths.get(uploadDir, filename);
+            return "ok".equals(result.get("result"));
 
-            return Files.deleteIfExists(filePath);
-
-        } catch (IOException e) {
+        } catch (Exception e) {
 
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Error occurred while deleting the file"
             );
         }
+    }
+
+    private String extractPublicId(String imgUrl) {
+
+        String path = imgUrl.substring(
+                imgUrl.indexOf("/upload/") + 8
+        );
+
+        // Remove Cloudinary version, e.g. v123456789/
+        if (path.startsWith("v")) {
+            int slashIndex = path.indexOf("/");
+
+            if (slashIndex != -1) {
+                path = path.substring(slashIndex + 1);
+            }
+        }
+
+        // Remove file extension
+        int extensionIndex = path.lastIndexOf(".");
+
+        if (extensionIndex != -1) {
+            path = path.substring(0, extensionIndex);
+        }
+
+        return path;
     }
 }

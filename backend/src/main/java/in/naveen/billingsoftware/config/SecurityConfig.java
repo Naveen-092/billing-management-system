@@ -100,8 +100,14 @@ public class SecurityConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
+        String frontendUrl = System.getenv("FRONTEND_URL");
+
+        if (frontendUrl == null || frontendUrl.isBlank()) {
+            frontendUrl = "http://localhost:5173";
+        }
+
         config.setAllowedOrigins(
-                List.of("http://localhost:5173")
+                List.of(frontendUrl)
         );
 
         config.setAllowedMethods(
