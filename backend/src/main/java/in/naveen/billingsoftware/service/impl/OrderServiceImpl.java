@@ -29,8 +29,7 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity newOrder = convertToOrderEntity(request);
 
         PaymentDetails paymentDetails = new PaymentDetails();
-        paymentDetails.setStatus(newOrder.getPaymentMethod() == PaymentMethod.CASH ?
-                PaymentDetails.PaymentStatus.COMPLETED : PaymentDetails.PaymentStatus.PENDING);
+        paymentDetails.setStatus(PaymentDetails.PaymentStatus.COMPLETED);
         newOrder.setPaymentDetails(paymentDetails);
         
         List<OrderItemEntity> orderItems = request.getCartItems().stream()
