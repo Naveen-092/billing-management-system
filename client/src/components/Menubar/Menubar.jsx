@@ -18,8 +18,8 @@ const Menubar = () => {
     const isActive = (path) => {
         return location.pathname === path;
     }
-
-    const isAdmin = auth.role === "ROLE_ADMIN";
+    console.log("CURRENT AUTH:", auth);
+    const isAdmin = auth.role === "ADMIN" || auth.role === "ROLE_ADMIN";
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-2">
